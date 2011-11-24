@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+
+<!--
+Gestion du temps v1.5b4
+Copyright 2011 Maximilien KNOPP and Jean-Loup CASTAIGNE
+Contact: maximilien[at]maxk.fr
+
+This file is part of Gestion du temps.
+
+    Foobar is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Foobar is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Gestion du temps.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="Content-type" content="text/html;charset=utf-8" />
+	<link type="text/css" media="all" href="./style.css" rel="stylesheet" />
+	<link rel="shortcut icon" type="image/png" href="favicon.png" />
+	<script type="text/javascript" src="js/script.js"></script>
+	<script type="text/javascript" src="js/jquery-1.6.2.min.js"></script>
+	<script type='text/javascript'>
+	
+	$(document).ready( function() {
+    //When page loads...
+      $(".tab_content").hide(); //Hide all content
+      $("ul.tabs li:first a").addClass("active"); //Activate first tab
+      $(".tab_content:first").show(); //Show first tab content
+      onglet();
+      if($('#backname, #expname, #supname').val() == "") $('#backname, #expname, #supname').addClass('empty');
+      //$('#backname, #expname, #supname').click(function () {
+      //	$(this).removeClass('empty');
+      //});
+  	});
+
+
+	</script>
+	<title>Time Tracking</title> 
+</head>
+
+
+<body>
+	<div id="global">
+<!--		<header>
+			<h1>OBSERVATION DU TEMPS</h1>
+		</header>
+-->
+		<div id="content">
+			
+		<nav>
+      <ul class="tabs">
+        <li><a href="#aide">Accueil</a></li>
+        <li><a href="#cadreconfig">Cadre</a></li>
+        <li><a href="#boutonconfig">Bouton</a></li>
+        <li><a href="#sauvecharge">Sauvegarde / Rechargement</a></li>
+      </ul>
+		</nav>
+
+		<form id="configtool" action="#" onsubmit="validate();return false" >
+			<div id="aide" class="tab_content">
+        <h2>Description de l'outil</h2>
+        <p>Cet outil permet, lors de l'observation d'un groupe d'individus, de comptabiliser le temps et la récurence de différentes actions.</p>
+        <p>L'utilisateur créera alors un bouton pour chaque action et configurera les interractions entre boutons telles que:</p>
+        <ul>
+          <li><b>Boutons non exclusifs :</b> les boutons non exclusif peuvent être appuyés en parallèle</li>
+          <li><b>Boutons exclusifs :</b> les bouton ne peuvent pas être appuyés en parallèle. si un bouton est déjà appuyé, l'appuie sur un bouton exclusif relachera automatiquement les autres boutons exclusifs</li>
+        </ul>
+        <p>Un rapport est automatiquement créé et liste en temps réel le nombre de fois que le bouton a été appuyé, le temps total d'appuie, le minimum, le maximum, et le temps moyen</p>
+        <h2>Les Cadres</h2>
+        <p>Les cadres n'ont aucun but fonctionnels, ils sont juste là afin d'organiser de manière sémantique les différents boutons créés.</p>
+        <p>On peut imaginer, lors de l'observation d'une interview entre deux personnes d'avoir deux cadres, un pour l'intervieweur et un pour l'interviewé.</p>
+        <h2>Les Boutons</h2>
+        <p>Lors de la création d'un bouton, quatre données seront demandées à l'utilisateur:</p>
+        <ul>
+          <li><b>Le nom :</b> c'est le nom du bouton qui sera affiché sur l'interface ainsi que dans le rapport</li>
+          <li><b>Le groupe :</b> c'est un chiffre compris entre 1 et 99. Le groupe sert à définir le comportement exclusif ou non exclufis des boutons. Tous les boutons appartenant au même groupe sont non exclusifs et donc tous les boutons n'appartenant pas au même groupe sont exclusifs</li>
+          <li><b>Le sous-groupe :</b> c'est une lettre comprise entre "a" et "z". Le sous-groupe permet de rendre, au sein d'un même groupe plusieurs bouton exclusifs uniquement entre eux.<br />
+          	<i><b>Cas Particulier:</b> Le sous-groupe "a" sera toujours non exclusif avec tous les autres sous-groupes. Par exemple, 3 boutons appartenant chacuns au même groupe et aux sous-groupe a, b, c auront le comportement suivant: Le bouton du sous-groupe "a" sera non exclusif avec les boutons des sous-groupes "b" et "c", ceux-ci seront par contre exclusif entre eux.</i>
+          </li>
+          <li><b>Le cadre :</b> c'est le cadre dans lequel le bouton sera affiché dans l'interface.</li>
+        </ul>
+
+        <div class="left">&copy; 2011 Maximilien KNOPP - Ce site est sous licence <a href="./COPYING">GPL</a> - <a href="./gestiondutemps.zip">Télécharger l'application</a></div>
+			</div>
+
+
+			<div id="cadreconfig" class="tab_content">
+				<div class="addelt" onClick="ajoutecadre();"></div>
+				<div class="supelt" onClick="suppcadre();"></div>
+<!--				<p class="explication">Les cadres définis ici n'ont pas de relation avec le fonctionnement des boutons.</p>
+				<p class="explication">Ils sont utilisés afin d'organiser les boutons selon le souhait de l'utilisateur. Par exemple un cadre rassemblera tous les boutons relatifs a l'enseignant, l'autre ceux relatifs aux élèves</p>
+-->				<div id="cadre1" class="cadreelt">
+					<div class="numcadre">Cadre 1</div>
+					<div class="nomcadre">
+						<label for="numcadre1">Nom du cadre :</label>
+						<input name="numcadre1" id="numcadre1" class="inputcadre" type="text" placeholder="Entrer le nom du cadre ici"/>
+					</div>
+				</div>
+
+			</div>
+
+			<div id="boutonconfig" class="tab_content">
+				
+				<div class="addelt" onClick="ajoutebouton();"></div>
+				<div class="supelt" onClick="suppbouton();"></div>
+
+				<div id="bouton1" class="boutonelt">
+					<div class="numbouton">Bouton 1</div>
+					<div class="nombouton">
+						<label for="numbouton">Nom du bouton :</label><br />
+						<input name="numbouton" id="numbouton1" class="inputbouton" type="text" placeholder="Nom du bouton"/>
+					</div>
+					<div class="groupebouton">
+						<label for="grpbouton">Groupe</label><br />
+						<input name="grpbouton" id="grpbouton1" class="inputgrp" placeholder="Groupe"/>
+					</div>
+					<div class="groupebouton">
+						<label for="grpbouton">Sous-Groupe</label><br />
+						<input name="sgrpbouton" id="sgrpbouton1" class="inputsgrp" type="text" placeholder="Sous-Groupe"/>
+					</div>
+					<div class="cadrebouton">
+						<label for="cadbouton">Cadre :</label><br />
+						<select name="cadbouton" id="cadbouton1" class="inputcadb" onFocus="setcadrelist(this);">
+						</select>
+					</div>
+				</div>
+			</div>
+
+
+			<div id="sauvecharge" class="tab_content">
+				
+
+				<div id="sauvegarde" class="sauvegarde">
+					<div class="titresave">Sauvegarder la configuration</div>
+					<div class="nomsauvegarde">
+						<div class="textlabel">Nom de la sauvegarde :</div>
+						<input name="savename" id="savename" class="savename" type="text" placeholder="Nom de la sauvegarde"/>
+					</div>
+					<div class="sauve" onClick="sauvegarde();">Sauvegarder</div>
+				</div>
+
+				<div id="restoration" class="restoration">
+					<div class="titrebackup">Restorer une configuration</div>
+					<div class="nombackup">
+						<div class="textlabel">Nom de la sauvegarde :</div>
+						<select name="backname" id="backname" class="backname" onFocus="getbackuplist('#backname');">
+              			<option value="" disabled="disabled">Sélectionner...</option>
+            </select>
+					</div>
+					<div class="charge" onClick="restore();">Charger</div>
+				</div>
+
+				<div id="suppression" class="suppression">
+					<div class="titresup">Suppression d'une configuration</div>
+					<div class="nomsup">
+						<div class="textlabel">Nom de la sauvegarde :</div>
+						<select name="supname" id="supname" class="supname" onFocus="getbackuplist('#supname');">
+              <option value="" disabled="disabled">Sélectionner...</option>
+            </select>
+					</div>
+					<div class="supp" onClick="deletebck();">Supprimer</div>
+				</div>
+
+				<div id="export" class="export">
+					<div class="titreexp">Exporter la configuration</div>
+					<div class="nomexp">
+						<div class="textlabel">Nom de la sauvegarde :</div>
+						<select name="expname" id="expname" class="expname" onFocus="getbackuplist('#expname');">
+              <option value="" disabled="disabled">Sélectionner...</option>
+            </select>
+					</div>
+					<div class="exp" onClick="exportbck();">Exporter</div>
+				</div>
+
+				<div id="import" class="import">
+					<div class="titreimp">Importer une configuration</div>
+					<div class="nomimp">
+						<div class="textlabel">Import :</div>
+						<input name="impname" id="impname" class="impname" type="text" placeholder="Coller la configuration ici"/>
+					</div>
+					<div class="imp" onClick="importbck();">Importer</div>
+				</div>
+
+			</div>
+			
+			<div id="submitconfig">
+				<input class="submit" type="submit" value="Démarrer" />
+			</div>
+		</form>
+
+    <div id="appli" class="tab_content">
+    </div>
+
+		</div>
+
+		<div id="rapport" class="tab_content">
+				<div id="result"></div>
+		</div>
+	</div>
+</body>
+</html>

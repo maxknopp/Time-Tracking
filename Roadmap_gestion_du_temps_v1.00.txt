@@ -1,0 +1,19 @@
+Prochaines évolution de l'application:
+
+Critique:
+ - Correction des bugs
+ - Sécurisation des formulaires (failles XSS)
+ - ajout d'un POPUP lors de la validation du formulaire et qu'une donnée n'est pas correcte
+	=> en cours: mise en place de simplemodal
+	+> ergonomie à vérifier
+ - ajout de texte explicatif sur le fonctionnement de l'application
+	=> en cours à demander correction  à jean-loup
+
+Majeur:
+ - Ajout import et export de la configuration (compatible iPad)
+	=> Fait
+ - Possibilité de reseter le rapport sans devoir repasser par la phase configuration
+
+Mineur:
+ - Compatibilité iPad (réaliser des tests)
+ - Modification du visuel de la GUI (couleur/position des boutons, etc...)
